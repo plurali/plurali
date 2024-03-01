@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 importers:
 
   .:
@@ -28,7 +24,7 @@ importers:
         version: 6.10.2
       '@nestjs-modules/mailer':
         specifier: ^1.9.1
-        version: 1.9.1(@nestjs/common@10.2.2)(@nestjs/core@10.2.2)(nodemailer@6.9.4)
+        version: 1.9.1(@nestjs/common@10.2.2)(@nestjs/core@10.2.2)(nodemailer@6.9.11)
       '@nestjs/axios':
         specifier: ^3.0.0
         version: 3.0.0(@nestjs/common@10.2.2)(axios@1.6.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -141,8 +137,8 @@ importers:
         specifier: ^0.22.0
         version: 0.22.0(@nestjs/common@10.2.2)(@prisma/client@5.2.0)(prisma@5.2.0)
       nodemailer:
-        specifier: ^6.9.4
-        version: 6.9.4
+        specifier: ^6.9.11
+        version: 6.9.11
       npm:
         specifier: ^9.8.1
         version: 9.8.1
@@ -173,7 +169,7 @@ importers:
         version: 10.1.16
       '@nestjs/schematics':
         specifier: ^10.0.2
-        version: 10.0.2(typescript@5.3.3)
+        version: 10.0.2(chokidar@3.5.3)(typescript@5.1.6)
       '@types/bcrypt':
         specifier: ^5.0.0
         version: 5.0.0
@@ -2233,7 +2229,7 @@ packages:
     dev: false
     optional: true
 
-  /@nestjs-modules/mailer@1.9.1(@nestjs/common@10.2.2)(@nestjs/core@10.2.2)(nodemailer@6.9.4):
+  /@nestjs-modules/mailer@1.9.1(@nestjs/common@10.2.2)(@nestjs/core@10.2.2)(nodemailer@6.9.11):
     resolution: {integrity: sha512-9kSDgg4qA6+2BXOzfY4IltL70uMGXDeE8u/dhkzM2gnCCOKu8Y+wIxWmh8xyLGYcrFHQ3Mke+ap0O1T98Tyjaw==}
     peerDependencies:
       '@nestjs/common': ^7.0.9 || ^8.0.0 || ^9.0.0 || ^10.0.0
@@ -2245,7 +2241,7 @@ packages:
       glob: 10.3.3
       inline-css: 4.0.2
       mjml: 4.14.1
-      nodemailer: 6.9.4
+      nodemailer: 6.9.11
       preview-email: 3.0.19
     optionalDependencies:
       '@types/ejs': 3.1.2
@@ -2598,21 +2594,6 @@ packages:
       jsonc-parser: 3.2.0
       pluralize: 8.0.0
       typescript: 5.1.6
-    transitivePeerDependencies:
-      - chokidar
-    dev: true
-
-  /@nestjs/schematics@10.0.2(typescript@5.3.3):
-    resolution: {integrity: sha512-DaZZjymYoIfRqC5W62lnYXIIods1PDY6CGc8+IpRwyinzffjKxZ3DF3exu+mdyvllzkXo9DTXkoX4zOPSJHCkw==}
-    peerDependencies:
-      typescript: '>=4.8.2'
-    dependencies:
-      '@angular-devkit/core': 16.1.8(chokidar@3.5.3)
-      '@angular-devkit/schematics': 16.1.8(chokidar@3.5.3)
-      comment-json: 4.2.3
-      jsonc-parser: 3.2.0
-      pluralize: 8.0.0
-      typescript: 5.3.3
     transitivePeerDependencies:
       - chokidar
     dev: true
@@ -9384,13 +9365,13 @@ packages:
     resolution: {integrity: sha512-uYr7J37ae/ORWdZeQ1xxMJe3NtdmqMC/JZK+geofDrkLUApKRHPd18/TxtBOJ4A0/+uUIliorNrfYV6s1b02eQ==}
     dev: true
 
-  /nodemailer@6.9.3:
-    resolution: {integrity: sha512-fy9v3NgTzBngrMFkDsKEj0r02U7jm6XfC3b52eoNV+GCrGj+s8pt5OqhiJdWKuw51zCTdiNR/IUD1z33LIIGpg==}
+  /nodemailer@6.9.11:
+    resolution: {integrity: sha512-UiAkgiERuG94kl/3bKfE8o10epvDnl0vokNEtZDPTq9BWzIl6EFT9336SbIT4oaTBD8NmmUTLsQyXHV82eXSWg==}
     engines: {node: '>=6.0.0'}
     dev: false
 
-  /nodemailer@6.9.4:
-    resolution: {integrity: sha512-CXjQvrQZV4+6X5wP6ZIgdehJamI63MFoYFGGPtHudWym9qaEHDNdPzaj5bfMCvxG1vhAileSWW90q7nL0N36mA==}
+  /nodemailer@6.9.3:
+    resolution: {integrity: sha512-fy9v3NgTzBngrMFkDsKEj0r02U7jm6XfC3b52eoNV+GCrGj+s8pt5OqhiJdWKuw51zCTdiNR/IUD1z33LIIGpg==}
     engines: {node: '>=6.0.0'}
     dev: false
 
@@ -10201,7 +10182,7 @@ packages:
       fixpack: 4.0.0
       get-port: 5.1.1
       mailparser: 3.6.5
-      nodemailer: 6.9.4
+      nodemailer: 6.9.11
       open: 7.4.2
       p-event: 4.2.0
       p-wait-for: 3.2.0
@@ -12891,3 +12872,7 @@ packages:
   /zenscroll@4.0.2:
     resolution: {integrity: sha512-jEA1znR7b4C/NnaycInCU6h/d15ZzCd1jmsruqOKnZP6WXQSMH3W2GL+OXbkruslU4h+Tzuos0HdswzRUk/Vgg==}
     dev: false
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
