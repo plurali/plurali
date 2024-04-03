@@ -1,10 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsOptional, IsString } from 'class-validator';
 import { UpdateUserRequestInterface } from './UpdateUserRequestInterface';
 
 export class UpdateUserRequest implements UpdateUserRequestInterface {
   @IsString()
-  @MinLength(32)
   @IsOptional()
   @ApiProperty()
   public accessToken: string | null = null;
