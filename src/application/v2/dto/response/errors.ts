@@ -13,11 +13,13 @@ export enum ApiError {
   UnknownError = 'unknown_error',
   SystemAlreadyAssociated = 'system_already_associated',
   InvalidVerification = 'invalid_verification',
+  EmailVerificationRatelimited = 'email_verification_rate_limited',
+  EmailAlreadyVerified = 'email_already_verified',
 }
 
 export const ApiErrorMessage: Record<ApiError, string> = {
   [ApiError.InvalidRequest]: 'Failed to process this request',
-  [ApiError.InvalidPluralKey]: 'Invalid or no Simply Plural token has been provided.',
+  [ApiError.InvalidPluralKey]: 'Invalid or no Simply Plural token has been provided',
   [ApiError.NotAuthenticated]: 'You are currently not authenticated',
   [ApiError.InvalidCredentials]: 'Invalid credentials have been provided',
   [ApiError.UsernameOrEmailTaken]: 'The username or email has already been taken',
@@ -28,6 +30,8 @@ export const ApiErrorMessage: Record<ApiError, string> = {
   [ApiError.UnsupportedFile]: 'This file is not supported',
   [ApiError.UploadFailed]: 'The file upload has failed, please try again',
   [ApiError.UnknownError]: 'An unknown error has occurred, please try again',
-  [ApiError.SystemAlreadyAssociated]: 'This system is already associated with another account.',
-  [ApiError.InvalidVerification]: 'The verification code is either invalid or has expired.',
+  [ApiError.SystemAlreadyAssociated]: 'This system is already associated with another account',
+  [ApiError.InvalidVerification]: 'The verification code is either invalid or has expired',
+  [ApiError.EmailVerificationRatelimited]: 'Please wait before requesting another verification email',
+  [ApiError.EmailAlreadyVerified]: 'Your email address is already verified',
 };

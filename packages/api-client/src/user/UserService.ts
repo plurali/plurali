@@ -1,4 +1,4 @@
-import type { UserDtoInterface, UpdateUserRequestInterface, VerifyUserEmailRequestInterface, ApiResponse } from '../types'
+import type { UserDtoInterface, UpdateUserRequestInterface, VerifyUserEmailRequestInterface, ApiResponse, OkInterface } from '../types'
 import { $api, ApiService } from '../ApiService';
 
 export class UserService {
@@ -24,6 +24,19 @@ export class UserService {
           url: '/v2/user',
           method: 'PATCH',
           data,
+        })
+      ).data;
+    } catch (error) {
+      return this.api.handleException(error);
+    }
+  }
+
+  public async resendVerificationEmail(): Promise<ApiResponse<OkInterface>> {
+    try {
+      return (
+        await this.api.client.request<ApiResponse<OkInterface>>({
+          url: '/v2/user/resend-email',
+          method: 'POST',
         })
       ).data;
     } catch (error) {

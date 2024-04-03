@@ -19,6 +19,12 @@ export interface FormattedTimeWithUnit {
 
 const isPlural = (num: number) => Math.abs(num) !== 1;
 
+export const getMinuteDifference = (date: Date, now = new Date()) => {
+  const difference = now.getTime() - date.getTime();
+
+  return difference / (1000 * 60);
+};
+
 export const getFormattedTimeWithUnit = (seconds: number): FormattedTimeWithUnit => {
   seconds = Math.floor(seconds);
 

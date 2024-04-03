@@ -22,6 +22,9 @@ import { Ok } from '@app/v2/dto/response/Ok';
 import { UserVerificationRepository } from '@domain/user/verification/UserVerificationRepository';
 import { InvalidVerificationException } from '@app/v2/exception/InvalidVerificationException';
 import { VerifyUserEmailRequest } from '@app/v2/dto/user/request/VerifyUserEmailRequest';
+import { getMinuteDifference } from '@domain/common/time';
+import { EmailVerificationRatelimitedException } from '@app/v2/exception/EmailVerificationRatelimitedException';
+import { EmailAlreadyVerifiedException } from '@app/v2/exception/EmailAlreadyVerifiedException';
 
 @Controller({
   path: '/user',
@@ -114,6 +117,34 @@ export class UserController extends BaseController {
     }
 
     return this.data(UserDto.from(user));
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/resend-email')
+  @ApiResponse(ok(200, Ok))
+  @ApiResponse(ok(400, ApiError.EmailVerificationRatelimited))
+  @ApiResponse(error(401, ApiError.NotAuthenticated))
+  async resendVerificationEmail(@CurrentUser() user: User) {
+    if (user.emailVerified) {
+      throw new EmailAlreadyVerifiedException();
+    }
+
+    const lastVerification = await this.verifications.findFirst({
+      where: {
+        userId: user.id,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    if (lastVerification && getMinuteDifference(lastVerification.createdAt) < 5) {
+      throw new EmailVerificationRatelimitedException();
+    }
+
+    await this.userService.sendVerificationEmail(user);
+
+    return this.ok();
   }
 
   @UseGuards(AuthGuard)
