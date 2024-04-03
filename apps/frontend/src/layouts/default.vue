@@ -66,17 +66,16 @@
     </Transition>
     <div class="container max-w-7xl mx-auto">
       <div class="py-16 md:py-24 px-4">
-        <div v-if="flashes.length >= 1" class="inline-flex flex-col gap-0.5 w-full">
+        <div class="inline-flex flex-col gap-0.5 w-full">
+          <RequiredPluralKey v-if="user && !user.pluralKey"/>
+          <NoEmailAssigned v-if="user && !user.email"/>
+          <EmailNotVerified v-if="user && user.email && !user.verified" />
           <Flash v-for="flash of flashes" :color="flash.color">
             <Sanitized :value="flash.message"/>
           </Flash>
         </div>
         <div class="bg-white rounded-2xl shadow-2xl p-8" :class="typeof bg === 'string' && 'bg-opacity-60'">
-          <div v-if="!!notifications && notifications.length >= 1" class="inline-flex flex-col gap-4 w-full mb-12">
-            <Notification v-for="notification of notifications" :color="notification.color">
-              <Sanitized :value="notification.message"/>
-            </Notification>
-          </div>
+          <NotificationRenderer />
           <div v-if="goBack" class="mb-5 inline-flex w-full justify-start items-center">
             <router-link :to="goBack" class="text-gray-500 hover:text-black transition">← Go back</router-link>
           </div>
@@ -123,12 +122,16 @@
 
 <script lang="ts">
 import { computed, defineComponent, onBeforeUnmount, ref, watch } from 'vue';
-import { background, flashes, goBack, notifications } from '../store';
+import { background, flashes, goBack, notifications, user } from '../store';
 import Flash from '../components/Flash.vue';
 import { isUrl, generateShades } from '../utils';
 import Sanitized from '../components/global/Sanitized.vue';
 import Notification from '../components/Notification.vue';
 import { isPubDev } from "../api";
+import RequiredPluralKey from '../components/notifications/RequiredPluralKey.vue';
+import NoEmailAssigned from '../components/notifications/NoEmailAssigned.vue';
+import EmailNotVerified from '../components/notifications/EmailNotVerified.vue';
+import NotificationRenderer from '../components/NotificationRenderer.vue';
 
 export default defineComponent({
   setup() {
@@ -169,9 +172,10 @@ export default defineComponent({
       imageLoaded,
       arr: (...arrays: any[]) => arrays.find(val => Array.isArray(val)),
       notifications,
+      user,
       isPubDev,
     };
   },
-  components: { Flash, Sanitized, Notification },
+  components: { Flash, Sanitized, Notification, RequiredPluralKey, EmailNotVerified, NotificationRenderer, NoEmailAssigned },
 });
 </script>

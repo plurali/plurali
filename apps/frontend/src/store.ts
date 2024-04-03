@@ -1,11 +1,13 @@
 import { ref } from 'vue'
 import type { UserDto } from '@app/v1/dto/user/UserDto'
 
+
 export enum FlashType {
   Danger = 'Danger',
   Warning = 'Warning',
   Success = 'Success',
   Info = 'Info',
+  Primary = "Primary"
 }
 
 export interface Flash {

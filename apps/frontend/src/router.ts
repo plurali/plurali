@@ -1,8 +1,7 @@
 import { RouteLocationNormalized, RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
-import { flash, FlashType, nextRedirect, notifications, user } from './store';
+import { flash, FlashType, nextRedirect, user } from './store';
 import { getUser } from './api/user';
 import { StatusMap, formatError } from './api';
-import { getNotifications } from './api/notification';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -127,72 +126,46 @@ export const isDashboard = (route: string | { path: string }) =>
 
 export const isFront = (route: string | RouteLocationNormalized) => !isAuth(route) && !isDashboard(route);
 
+const accessibleWithoutPluralKey = [
+  "dashboard:index",
+  "dashboard:user"
+]
+
+export const isAccessibleWithoutPluralKey = (route: RouteLocationNormalized) => accessibleWithoutPluralKey.includes((route.name ?? route.path).toString())
+
 router.beforeEach(async to => {
   nextRedirect();
-
-  const accessibleWithoutPluralKey = [
-    "dashboard:index",
-    "dashboard:user"
-  ]
-
-  try {
-    const apiNotifications = (await getNotifications()).data ?? { success: false };
-
-    if (apiNotifications.success && apiNotifications.data?.length >= 1) {
-      notifications.value = apiNotifications.data.map((n) => ({
-        color: n.color,
-        message: n.content,
-      })) ?? [];
-    }
-  } catch (e) {
-    console.warn("failed to fetch notifications", { e });
-  }
-
-
-  // TODO: refactor this horrendous thing
-  const promise = (async () => {
-    try {
-      const data = (await getUser()).data;
-      if (!data.success) throw new Error();
-
-      user.value = data.data.user;
-      if (isAuth(to)) return '/dashboard';
-
-      if (isDashboard(to)) {
-        if (!user.value.email) {
-          flash('There is no email assigned to your account yet. Add one to prevent losing your account.', FlashType.Warning, false, true);
-        } else if (!user.value.verified) {
-          flash('Your email address is not verified. Please check your mailbox.', FlashType.Warning, false, true);
-        }
-
-        if (!user.value.pluralKey) {
-          flash('A Simply Plural API key is required before accessing the system dashboard!', FlashType.Warning, false, true);
-
-          if (!accessibleWithoutPluralKey.includes((to.name ?? to.path).toString())) {
-            return '/dashboard/user';
-          }
-        }
-      }
-
-    } catch (error) {
-      user.value = null;
-      const status = formatError(error);
-      if (status !== StatusMap.NotAuthenticated) {
-        flash(status, FlashType.Danger, true);
-      } else if (isDashboard(to)) {
-        flash('You need to be logged in to access the dashboard!', FlashType.Warning, true, false);
-      }
-      if (!isAuth(to)) {
-        return '/auth/login';
-      }
-    }
-  })();
 
   if (isFront(to)) {
     return;
   }
 
-  return await promise;
+  try {
+    const data = (await getUser()).data;
+    if (!data.success) throw new Error();
+
+    user.value = data.data.user;
+    if (isAuth(to)) return '/dashboard';
+
+    const hasPluralKey = !!user.value.pluralKey;
+    const isRouteAccessible = isAccessibleWithoutPluralKey(to);
+
+    if (isDashboard(to) && !hasPluralKey && !isRouteAccessible) {
+      return '/dashboard/user';
+    }
+  } catch (error) {
+    user.value = null;
+
+    const status = formatError(error);
+
+    if (isDashboard(to) && status !== StatusMap.NotAuthenticated) {
+      flash('You need to be logged in to access the dashboard!', FlashType.Warning, true, false);
+    
+      return '/auth/login';
+    }
+
+    flash(status, FlashType.Danger, true);
+  }
 });
 
 export { router };

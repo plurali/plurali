@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div :style="containerStyle" :class="['px-8 py-2.5 mb-4 font-medium rounded-2xl w-full', containerClass]">
     <slot />
   </div>
@@ -10,6 +10,7 @@ import { isHex } from '../utils';
 import { FlashType } from '../store';
 
 const flashTypeToClass = {
+  [FlashType.Primary]: 'bg-purple-700 text-white',
   [FlashType.Danger]: 'bg-red-700 text-white',
   [FlashType.Warning]: 'bg-yellow-600 text-white',
   [FlashType.Success]: 'bg-green-700 text-white',
