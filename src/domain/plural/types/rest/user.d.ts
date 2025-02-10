@@ -13,7 +13,7 @@ export interface UserContent {
   lastUpdate: number;
   uid: string;
   username: string;
-  fields: Record<string, UserCustomField>;
+  fields?: Record<string, UserCustomField>;
   color: string;
   desc: string;
   avatarUuid: string;

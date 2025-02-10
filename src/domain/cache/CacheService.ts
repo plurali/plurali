@@ -91,11 +91,15 @@ export class CacheService {
     await tx.field.deleteMany({
       where: {
         pluralId: {
-          notIn: Object.keys(plural.content.fields),
+          notIn: Object.keys(plural.content.fields ?? {}),
         },
         systemId: system.id,
       },
     });
+
+    if (!plural.content.fields) {
+      return [];
+    }
 
     const fields = [];
 
